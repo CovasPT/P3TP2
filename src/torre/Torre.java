@@ -8,6 +8,7 @@ import bloon.Bloon;
 import game.manipulator.ManipuladorTorre;
 import mundo.Mundo;
 import prof.jogos2D.image.ComponenteMultiAnimado;
+import torre.Estrategia.EstrategiaAtaque;
 import torre.projetil.Projetil;
 
 /**
@@ -119,6 +120,10 @@ public interface Torre extends Cloneable {
 	 * @return uma torre igual à original
 	 */
 	public Torre clone();
+
+	public void setEstrategia (EstrategiaAtaque estrategia);
+	public EstrategiaAtaque getEstrategia();
+
 
 	public  ManipuladorTorre criarManipulador() {
 		return new ManipuladorVazio(this);
