@@ -107,4 +107,8 @@ public class TorreCanhao extends TorreDefault {
 		p[0].setAlcance(getRaioAcao() + 20);
 		return p;
 	}
+	 @Override
+    public void aceitar(VisitorTorre v) {
+        v.visita(this);
+    }
 }

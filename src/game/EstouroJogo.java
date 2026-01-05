@@ -535,13 +535,11 @@ public class EstouroJogo extends JFrame implements BloonObserver {
 		public void mousePressed(Point p) {
 			torreSel = mundo.getTowerAt(p);
 			if (torreSel != null) {
-				ManipuladorTorre man = torre.criarManipulador(torreSel);
-				estadoAtual = new EstadoManipularTorre(man);
-				towerConfigPanel.setSelecionada(torreSel);
-				towerConfigPanel.setVisible(true);
-			} else
-				towerConfigPanel.setVisible(false);
-			zonaJogo.repaint();
+				Torre t = torreSel.clone();
+				t.setPosicao(p);
+				mundo.addTower(t);
+				estadoAtual = new EstadoSelecionarTorre();
+			}
 		}
 
 		@Override

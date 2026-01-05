@@ -6,6 +6,7 @@ import java.util.List;
 
 import bloon.Bloon;
 import game.manipulator.ManipuladorTorre;
+import game.manipulator.ManipuladorVazio;
 import mundo.Mundo;
 import prof.jogos2D.image.ComponenteMultiAnimado;
 import torre.Estrategia.EstrategiaAtaque;
@@ -128,4 +129,9 @@ public interface Torre extends Cloneable {
 	public default  ManipuladorTorre criarManipulador() {
 		return new ManipuladorVazio(this);
 	}
+
+	public default void aceitar(VisitorTorre visitor) {
+		visitor.visita(this);
+	}
+
 }

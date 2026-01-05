@@ -122,4 +122,10 @@ public class TorreOctogonal extends TorreDefault {
 		getComponente().setAngulo(angle);
 		baseAngle = angle;
 	}
+
+	 @Override
+    public void aceitar(VisitorTorre v) {
+        v.visita(this);
+    }
 }
+

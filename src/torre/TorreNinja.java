@@ -129,4 +129,9 @@ public class TorreNinja extends TorreDefault {
             return p;
         }
     }
+
+     @Override
+    public void aceitar(VisitorTorre v) {
+        v.visita(this);
+    }
 }

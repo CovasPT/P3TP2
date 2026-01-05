@@ -32,29 +32,19 @@ public class GameWriter {
 
 			List<Torre> torres = m.getTorres();
 			out.println(torres.size());
-			// TODO remover estes instanceof
-			for (Torre t : torres) {
-				Point p = t.getComponente().getPosicaoCentro();
-				// escrever a posição e o tipo de torre
-				out.print(p.x + "\t" + p.y + "\t");
-				if (t instanceof TorreMacaco)
-					out.println("macaco");
-				else if (t instanceof TorreOctogonal) {
-					out.print("octo\t");
-					out.println(t.getComponente().getAngulo());
-				} else if (t instanceof TorreCanhao)
-					out.println("canhao");
-				else if (t instanceof TorreMorteiro) {
-					out.print("morteiro\t");
-					Point ataque = ((TorreMorteiro) t).getAreaAlvo();
-					out.println(ataque.x + "\t" + ataque.y);
-				} else if (t instanceof TorreNinja)
-					out.println("ninja");
-				else if (t instanceof TorreBalista) {
-					out.print("balista\t");
-					out.println(t.getComponente().getAngulo());
-				}
+			for(Torre t: torres){
+			GameWVisitor writerVisitor = new GameWVisitor();
+
+			// 1. Escreve a posição (comum a todas)
+			Point p = t.getComponente().getPosicaoCentro();
+			out.print(p.x + "\t" + p.y + "\t");
+
+			// 2. Visita a torre para gerar a string correta
+			t.aceitar(writerVisitor);
+			
+			// 3. Obtém o resultado guardado no visitor e escreve
+			out.println(writerVisitor.getInformacaosave());
+			}
 			}
 		}
-	}
 }

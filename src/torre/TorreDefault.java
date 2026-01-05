@@ -12,6 +12,9 @@ import bloon.Bloon;
 import mundo.Mundo;
 import prof.jogos2D.image.ComponenteMultiAnimado;
 import prof.jogos2D.util.DetectorColisoes;
+import torre.projetil.Projetil;
+import torre.Estrategia.*;
+
 
 /**
  * Classe que implementa os comportamentos e variáveis comuns a todos as torres.
@@ -23,6 +26,7 @@ public abstract class TorreDefault implements Torre {
 	private ComponenteMultiAnimado imagem; // desenho da torre
 
 	private int modoAtaque = ATACA_PRIMEIRO; // modo de ataque da torre
+	private EstrategiaAtaque estrategia; // estrategia de ataque
 	private int raioAtaque; // raio de ataque, isto é, área circular onde consegue detetar bloons
 	private Point pontoDisparo; // ponto de onde sai o disparo
 
@@ -168,6 +172,63 @@ public abstract class TorreDefault implements Torre {
 	}
 
 	@Override
+	public void setEstrategia(EstrategiaAtaque estrategia) {
+		this.estrategia = estrategia;
+	}
+
+	@Override
+	public EstrategiaAtaque getEstrategia() {
+		return estrategia;
+	}
+
+	
+	@Override
+	public Projetil[] atacar(List<Bloon> bloons) {
+		atualizarCicloDisparo();
+		ComponenteMultiAnimado anim = getComponente();
+
+		// 1. Gestão da Animação
+		if (anim.getAnim() == ATAQUE_ANIM && anim.numCiclosFeitos() >= 1) {
+			anim.setAnim(PAUSA_ANIM);
+		}
+
+		// 2. Escolher o Alvo (Usando STRATEGY)
+		List<Bloon> alvosPossiveis = getBloonsInRadius(bloons, getComponente().getPosicaoCentro(), getRaioAcao());
+		if (alvosPossiveis.isEmpty()) return new Projetil[0];
+		
+		Bloon alvo = getEstrategia().escolherAlvo(this,alvosPossiveis );
+		
+		if (alvo == null) return new Projetil[0];
+		Point posAlvo = alvo.getComponente().getPosicaoCentro();
+
+		// 3. Rodar a Torre
+		double angle = DetectorColisoes.getAngulo(posAlvo, anim.getPosicaoCentro());
+		anim.setAngulo(angle);
+
+		// 4. Verificar Cooldown
+		sincronizarFrameDisparo(anim);
+		if (!podeDisparar()) return new Projetil[0];
+
+		// 5. Calcular Posição do Disparo
+		resetTempoDisparar();
+		Point centro = getComponente().getPosicaoCentro();
+		Point disparo = getPontoDisparo();
+		double cosA = Math.cos(angle);
+		double senA = Math.sin(angle);
+		int px = (int) (disparo.x * cosA - disparo.y * senA);
+		int py = (int) (disparo.y * cosA + disparo.x * senA);
+		Point pontoFinalDisparo = new Point(centro.x + px, centro.y + py);
+
+		// 6. Criar o Projétil Específico (FACTORY METHOD)
+		// Aqui a classe pai delega na filha a criação do objeto concreto
+		return criarProjetil(pontoFinalDisparo, angle, alvo);
+	}
+
+	protected Projetil[] criarProjetil(Point posicao, double angulo, Bloon alvo) {
+		return new Projetil[0];
+	}
+
+	@Override
 	public Torre clone() {
 		try {
 			TorreDefault copia = (TorreDefault) super.clone();
@@ -179,4 +240,8 @@ public abstract class TorreDefault implements Torre {
 			return null;
 		}
 	}
+
+	
+
+
 }

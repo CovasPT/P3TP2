@@ -112,5 +112,9 @@ public class TorreMacaco extends TorreDefault {
 		p[0].setAlcance(getRaioAcao() + 30);
 		return p;
 	}
+	 @Override
+    public void aceitar(VisitorTorre v) {
+        v.visita(this);
+    }
 
 }

@@ -45,13 +45,12 @@ public class TorreSniper extends TorreDefault {
 		
 		projeteis[0].setPosicao(posicao);
 		projeteis[0].setAlcance(3000); // A bala viaja muito longe
-		projeteis[0].setMundo(getMundo());
+		
 		
 		return projeteis;
 	}
-
-	@Override
-	public String getIdentificadorSave() {
-		return "sniper";
-	}
+    @Override
+    public void aceitar(VisitorTorre v) {
+        v.visita(this);
+    }
 }

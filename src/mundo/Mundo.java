@@ -54,6 +54,7 @@ public class Mundo {
 			Projetil ps[] = t.atacar(bloons);
 			for (Projetil p : ps)
 				addProjetil(p);
+			
 		}
 
 		// depois de tudo atualizado vamos remover os bloons rebentados

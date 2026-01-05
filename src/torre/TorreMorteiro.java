@@ -127,5 +127,8 @@ public class TorreMorteiro extends TorreDefault {
 		copia.areaAlvo = new Point(areaAlvo);
 		return copia;
 	}
-
+ @Override
+    public void aceitar(VisitorTorre v) {
+        v.visita(this);
+    }
 }
