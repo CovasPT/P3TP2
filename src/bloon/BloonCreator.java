@@ -139,7 +139,7 @@ public class BloonCreator {
 	public Bloon criarMetal() {
 		ComponenteVisual imagem = getImagem("metal");
 		ComponenteVisual imagemPop = getImagemPop();
-		// TODO metal tem de ser imune a perfurantes
+		// metal tem de ser imune a perfurantes
 		BloonMultiCamada metal = new BloonMultiCamada(imagem, imagemPop, 3, 5, 7);
 		metal.addBloon(criarRosa());
 		metal.addBloon(criarRosa());

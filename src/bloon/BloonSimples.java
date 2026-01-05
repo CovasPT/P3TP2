@@ -226,6 +226,7 @@ public class BloonSimples implements Bloon {
 	public Bloon clone() {
 		try {
 			BloonSimples copia = (BloonSimples) super.clone();
+			copia.obs = new ArrayList<BloonObserver>();
 			return copia;
 		} catch (CloneNotSupportedException e) {
 			return null;

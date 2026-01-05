@@ -125,7 +125,7 @@ public interface Torre extends Cloneable {
 	public EstrategiaAtaque getEstrategia();
 
 
-	public  ManipuladorTorre criarManipulador() {
+	public default  ManipuladorTorre criarManipulador() {
 		return new ManipuladorVazio(this);
 	}
 }
