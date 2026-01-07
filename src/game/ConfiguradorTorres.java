@@ -32,7 +32,6 @@ public class ConfiguradorTorres extends JPanel {
 	 * Cria os vários botões para os vários modos de ataque
 	 */
 	private void criarBotoesAtaques(JPanel painelAtaques) {
-		// TODO acrescentar os novos modos de ataque
 		painelAtaques.add(criarBotaoAtaque("Primeiro", Torre.ATACA_PRIMEIRO));
 		painelAtaques.add(criarBotaoAtaque("Último", Torre.ATACA_ULTIMO));
 
