@@ -224,8 +224,10 @@ public class BloonCreator {
 		ComponenteVisual imagemPop = getImagemPopZep();
 		ComponenteVisual armaduraImg = getImagemArmadura();
 
+
 		// TODO o Zeppelin metal tem de ser imune a perfurantes
-		BloonFabricante metalZep = new BloonFabricante(imagem, imagemPop, 2.3f, 30, 45, 30);
+		BloonFabricante metalZepFabricante = new BloonFabricante(imagem, imagemPop, 2.3f, 30, 45, 30);
+		Bloon metalZez = BloonImune(metalZepFabricante, false, true);
 
 		// TODO o verde e o amarelo têm de ter uma armadura que rebenta ao fim de 8
 		// contactos

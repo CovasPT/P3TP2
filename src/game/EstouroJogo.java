@@ -658,8 +658,8 @@ public class EstouroJogo extends JFrame implements BloonObserver {
 		zonaLateral.add(getZonaTorres(), null);
 		zonaLateral.add(getZonaUpgrades(), null);
 		zonaLateral.add(getComecarBT(), null);
-		// zonaLateral.add(getLoadBT(), null);
-		// zonaLateral.add(getSaveBT(), null);
+		zonaLateral.add(getLoadBT(), null);
+		zonaLateral.add(getSaveBT(), null);
 
 		return zonaLateral;
 	}
@@ -767,6 +767,20 @@ public class EstouroJogo extends JFrame implements BloonObserver {
 			comecarBt.addActionListener(e -> comecarRound());
 		}
 		return comecarBt;
+	}
+
+	private JButton getSaveBT(){
+		JButton saveBT = new JButton();
+		saveBT.setBounds(new Rectangle(1, 423, 147,59));
+		saveBT.setText("Save");
+		return saveBT;
+	}
+
+	private JButton getLoadBT(){
+		JButton loadBT = new JButton();
+		loadBT.setBounds(new Rectangle(1, 424, 146,58));
+		loadBT.setText("Load");
+		return loadBT;
 	}
 
 	/**
