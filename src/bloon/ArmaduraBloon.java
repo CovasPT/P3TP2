@@ -1,41 +1,48 @@
 package bloon;
+import java.awt.Graphics2D;
 
-public class ArmaduraBloon extends DecoratorBloon{
-    private int vidaArmadura;
+import prof.jogos2D.image.ComponenteVisual;
 
-    public ArmaduraBloon(Bloon bloonDecorado, int vidaArmadura) {
-        super(bloonDecorado);
-        this.vidaArmadura = vidaArmadura;
-    }
+    public class ArmaduraBloon extends DecoratorBloon{
+     private int vidaArm;
+     private ComponenteVisual imagemArmadura;
+
+     public ArmaduraBloon(Bloon bloonDecorador, int vidaArm, ComponenteVisual imagemArmadura) {
+        super(bloonDecorador);
+        this.vidaArm = vidaArm;
+        this.imagemArmadura = imagemArmadura;
+     }
 
     @Override
-    public int getVida() {
-        // A vida total é a do bloon + a da armadura
-        return bloonDecorado.getVida() + vidaArmadura;
-    }
-
-    @Override
-    public void levouDano(int dano) {
-        if (vidaArmadura > 0) {
-            vidaArmadura -= dano;
-            if (vidaArmadura < 0) {
-                // Se o dano foi maior que a armadura, o resto vai para o bloon
-                int danoRestante = -vidaArmadura;
-                vidaArmadura = 0;
-                bloonDecorado.levouDano(danoRestante);
-            }
-        } else {
-            // Se já não tem armadura, ataca o bloon diretamente
-            bloonDecorado.levouDano(dano);
+    public void mover() {
+        super.mover();
+        if (vidaArm > 0) {
+            imagemArmadura.setPosicaoCentro(getComponente().getPosicaoCentro());
         }
     }
 
-    @Override
+      @Override
     public void desenhar(Graphics2D g) {
-        super.desenhar(g); // Desenha o bloon normal
-        if (vidaArmadura > 0) {
-            // Desenha uma imagem de armadura por cima (se tiveres)
-            // Ex: g.drawImage(imagemArmadura, ...);
+        super.desenhar(g);
+        if (vidaArm > 0) {
+            imagemArmadura.desenhar(g);
         }
+    }
+     @Override
+     public int pop(int estrago) {
+         if (vidaArm > 0) {
+            vidaArm--; 
+            // Absorve o dano do perfurante e devolve 0
+            return 0; 
+        }
+        // Se a armadura já partiu, o bloon sofre dano normal
+        return super.pop(estrago);
+    }
+
+    @Override
+    public Bloon clone() {
+        ArmaduraBloon copia = (ArmaduraBloon) super.clone();
+        copia.imagemArmadura = imagemArmadura.clone();
+        return copia;
     }
 }

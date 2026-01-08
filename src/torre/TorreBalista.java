@@ -14,7 +14,7 @@ import bloon.Bloon;
 import prof.jogos2D.image.*;
 import prof.jogos2D.util.ImageLoader;
 import torre.projetil.BombaImpacto;
-
+import torre.projetil.Dardo;
 import torre.projetil.Projetil;
 
 /**
@@ -94,13 +94,12 @@ public class TorreBalista extends TorreDefault {
 	@Override
 	protected Projetil[] criarProjetil(Point posicao, double angulo, Bloon alvo) {
 		Projetil p[] = new Projetil[1];
-		
+		ComponenteMultiAnimado anim = getComponente();
 		// Carrega a imagem da bomba
-		ComponenteVisual img = new ComponenteSimples(ImageLoader.getLoader().getImage("data/torres/bomba.gif"));
-		
-		// Cria o objeto BombaImpacto
-		p[0] = new BombaImpacto(img, angulo, 12, 2, getMundo());
-		
+		ComponenteVisual img = new ComponenteSimples(ImageLoader.getLoader().getImage("data/torres/seta.gif"));
+		double angle = anim.getAngulo();
+		// Cria o objeto Dardo
+		p[0] = p[0] = new Dardo(img, angle, 10, 20);
 		// Configurações iniciais
 		p[0].setPosicao(posicao);
 		p[0].setAlcance(getRaioAcao() + 20);

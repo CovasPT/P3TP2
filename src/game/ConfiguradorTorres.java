@@ -74,7 +74,6 @@ public class ConfiguradorTorres extends JPanel {
 		botoes.put(modoAtaque, button);
 		return button;
 	}
-
 	/**
 	 * cria o configurador
 	 */

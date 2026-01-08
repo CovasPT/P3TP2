@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import bloon.Bloon;
 import bloon.BloonObserver;
+import game.manipulator.ManipuladorCreator;
 import game.manipulator.ManipuladorTorre;
 
 import java.io.*;
@@ -535,10 +536,13 @@ public class EstouroJogo extends JFrame implements BloonObserver {
 		public void mousePressed(Point p) {
 			torreSel = mundo.getTowerAt(p);
 			if (torreSel != null) {
-				Torre t = torreSel.clone();
-				t.setPosicao(p);
-				mundo.addTower(t);
-				estadoAtual = new EstadoSelecionarTorre();
+				ManipuladorTorre man = new ManipuladorCreator().criarManipulador(torreSel);
+				estadoAtual = new EstadoManipularTorre(man);
+				towerConfigPanel.setSelecionada(torreSel);
+				towerConfigPanel.setVisible(true);
+			} else {
+				towerConfigPanel.setVisible(false);
+				zonaJogo.repaint();
 			}
 		}
 
@@ -769,6 +773,7 @@ public class EstouroJogo extends JFrame implements BloonObserver {
 		return comecarBt;
 	}
 
+
 	/**
 	 * Arranca com o jogo
 	 * 
@@ -777,10 +782,10 @@ public class EstouroJogo extends JFrame implements BloonObserver {
 	public static void main(String[] args) {
 		EstouroJogo estouro = new EstouroJogo();
 		estouro.setVisible(true);
-		estouro.play();
+		//estouro.play();
 		// Para testar um nível em particular, comentar a linha anterior e usar
 		// estouro.play("data/niveis/nivel_4_2.txt", 10000, 200);
 		// ou para usar um dos níveis de testar balões (ou torres)
-		// estouro.play("data/niveis_teste/teste_rosa.txt", 10000, 200);
+		 estouro.play("data/niveis_teste/teste_branco.txt", 10000, 200);
 	}
 }

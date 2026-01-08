@@ -71,8 +71,6 @@ public class TorreMorteiro extends TorreDefault {
 	@Override
 	public Projetil[] atacar(List<Bloon> bloons) {
 		atualizarCicloDisparo();
-
-		// vamos buscar o desenho pois vai ser preciso várias vezes
 		ComponenteMultiAnimado anim = getComponente();
 
 		// já acabou a animação de disparar? volta à animação de pausa
@@ -88,7 +86,7 @@ public class TorreMorteiro extends TorreDefault {
 		// ver o ângulo que o alvo faz com a torre, para assim rodar esta
 		double angle = DetectorColisoes.getAngulo(posAlvo, getComponente().getPosicaoCentro());
 
-		// se vai disparar daqui a pouco, começamos já com a animação de ataque
+		
 		// para sincronizar a frame de disparo com o disparo real
 		sincronizarFrameDisparo(anim);
 

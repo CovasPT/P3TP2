@@ -57,6 +57,28 @@ public abstract class TorreDefault implements Torre {
 		this.frameDisparoDelay = delayDisparo;
 		this.pontoDisparo = Objects.requireNonNull(pontoDisparo);
 		this.raioAtaque = raioAtaque;
+		this.estrategia = new AtaquePrimeiro();
+	}
+
+		@Override
+		public void setModoAtaque(int modo) {
+		this.modoAtaque = modo;
+		// O Switch foi movido para aqui para centralizar a decisão
+		switch (modo) { // <---------------- Alterado por gemini (Bloco switch adicionado aqui)
+			case ATACA_PRIMEIRO: this.estrategia = new AtaquePrimeiro(); break;
+			case ATACA_ULTIMO:   this.estrategia = new AtaqueUltimo(); break;
+			case ATACA_PERTO:    this.estrategia = new AtaquePerto(); break;
+			case ATACA_JUNTOS:   this.estrategia = new AtaqueJuntos(); break;
+			case ATACA_LONGE:    this.estrategia = new AtaqueLonge(); break;
+			case ATACA_FORTE:    this.estrategia = new AtaqueForte(); break;
+			default:             this.estrategia = new AtaquePrimeiro(); break;
+
+		}
+	}
+
+	@Override
+	public int getModoAtaque() {
+		return modoAtaque;
 	}
 
 	protected void atualizarCicloDisparo() {
@@ -136,15 +158,7 @@ public abstract class TorreDefault implements Torre {
 		g.setComposite(oldComp);
 	}
 
-	@Override
-	public void setModoAtaque(int modo) {
-		modoAtaque = modo;
-	}
 
-	@Override
-	public int getModoAtaque() {
-		return modoAtaque;
-	}
 
 	/**
 	 * Retorna uma lista com os bloons que estejam dentro de um raio de
@@ -245,6 +259,5 @@ public abstract class TorreDefault implements Torre {
 	public void aceitar(VisitorTorre v) {
 		v.visita(this);
 	}
-
 
 }

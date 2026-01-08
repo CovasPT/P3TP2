@@ -2,6 +2,9 @@ package bloon;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 import prof.jogos2D.image.*;
 import prof.jogos2D.util.ImageLoader;
@@ -12,6 +15,25 @@ import prof.jogos2D.util.ImageLoader;
 public class BloonCreator {
 
 	private ImageLoader loader = ImageLoader.getLoader();
+	private Map<String, Supplier<Bloon>> bloons = new HashMap<>();
+
+	public BloonCreator() {
+		bloons.put("vermelho", this::criarVermelho);
+		bloons.put("azul", this::criarAzul);
+		bloons.put("verde", this::criarVerde);
+		bloons.put("amarelo", this::criarAmarelo);
+		bloons.put("rosa", this::criarRosa);
+		bloons.put("metal", this::criarMetal);
+		bloons.put("barro", this::criarBarro);
+		bloons.put("preto", this::criarPreto);
+		bloons.put("branco", this::criarBranco);
+		bloons.put("zep_azul", this::criarZeppelinAzul);
+		bloons.put("zep_verde", this::criarZeppelinVerde);
+		bloons.put("zep_amarelo", this::criarZeppelinAmarelo);
+		bloons.put("zep_rosa", this::criarZeppelinRosa);
+		bloons.put("zep_metal", this::criarZeppelinMetal);
+		bloons.put("zep_preto", this::criarZeppelinPreto);
+	}
 
 	/**
 	 * método que cria o bloon com um determinado nome de código
@@ -20,39 +42,8 @@ public class BloonCreator {
 	 * @return o bloon criado, ou null caso seja um nome inválido
 	 */
 	public Bloon criarBloon(String nome) {
-		switch (nome) {
-			case "vermelho":
-				return criarVermelho();
-			case "azul":
-				return criarAzul();
-			case "verde":
-				return criarVerde();
-			case "amarelo":
-				return criarAmarelo();
-			case "rosa":
-				return criarRosa();
-			case "metal":
-				return criarMetal();
-			case "barro":
-				return criarBarro();
-			case "preto":
-				return criarPreto();
-			case "branco":
-				return criarBranco();
-			case "zep_azul":
-				return criarZeppelinAzul();
-			case "zep_verde":
-				return criarZeppelinVerde();
-			case "zep_amarelo":
-				return criarZeppelinAmarelo();
-			case "zep_rosa":
-				return criarZeppelinRosa();
-			case "zep_metal":
-				return criarZeppelinMetal();
-			case "zep_preto":
-				return criarZeppelinPreto();
-		}
-		return null;
+		Supplier<Bloon> supplier = bloons.get(nome);
+		return supplier != null ? supplier.get() : null;
 	}
 
 	private ComponenteVisual getImagem(String nome) {
@@ -143,7 +134,7 @@ public class BloonCreator {
 		BloonMultiCamada metal = new BloonMultiCamada(imagem, imagemPop, 3, 5, 7);
 		metal.addBloon(criarRosa());
 		metal.addBloon(criarRosa());
-		return metal;
+		return new BloonImune(metal, false, true);
 	}
 
 	public Bloon criarBarro() {
@@ -153,7 +144,7 @@ public class BloonCreator {
 		BloonMultiCamada barro = new BloonMultiCamada(imagem, imagemPop, 3.5f, 4, 7);
 		barro.addBloon(criarPreto());
 		barro.addBloon(criarPreto());
-		return barro;
+		return new BloonImune(barro, false, true);
 	}
 
 	public Bloon criarPreto() {
@@ -163,7 +154,7 @@ public class BloonCreator {
 		BloonMultiCamada black = new BloonMultiCamada(imagem, imagemPop, 4, 6, 7);
 		black.addBloon(criarRosa());
 		black.addBloon(criarRosa());
-		return black;
+		return new BloonImune(black, true, false);
 	}
 
 	public Bloon criarBranco() {
@@ -173,7 +164,7 @@ public class BloonCreator {
 		BloonMultiCamada black = new BloonMultiCamada(imagem, imagemPop, 4, 6, 7);
 		black.addBloon(criarMetal());
 		black.addBloon(criarMetal());
-		return black;
+		return new BloonImune(black, true, false);
 	}
 
 	public Bloon criarZeppelinAzul() {
@@ -224,15 +215,17 @@ public class BloonCreator {
 		ComponenteVisual imagemPop = getImagemPopZep();
 		ComponenteVisual armaduraImg = getImagemArmadura();
 
+
 		// TODO o Zeppelin metal tem de ser imune a perfurantes
-		BloonFabricante metalZep = new BloonFabricante(imagem, imagemPop, 2.3f, 30, 45, 30);
+		BloonFabricante metalZepFabricante = new BloonFabricante(imagem, imagemPop, 2.3f, 30, 45, 30);
+		Bloon metalZep = new BloonImune(metalZepFabricante, false, true);
 
 		// TODO o verde e o amarelo têm de ter uma armadura que rebenta ao fim de 8
 		// contactos
-		Bloon verde = criarVerde();
-		metalZep.addBloonProvavel(verde);
-		Bloon amarelo = criarAmarelo();
-		metalZep.addBloonProvavel(amarelo);
+		Bloon verde = new ArmaduraBloon(criarVerde(), 8, armaduraImg.clone());
+		metalZepFabricante.addBloonProvavel(verde);
+		Bloon amarelo = new ArmaduraBloon(criarAmarelo(), 8, armaduraImg.clone());
+		metalZepFabricante.addBloonProvavel(amarelo);
 		return metalZep;
 	}
 
@@ -242,13 +235,14 @@ public class BloonCreator {
 		ComponenteVisual escudoImg = getImagemEscudo();
 
 		// TODO o Zeppelin preto tem de ser imune a explosões
-		BloonFabricante pretoZep = new BloonFabricante(imagem, imagemPop, 2.7f, 30, 45, 30);
+		BloonFabricante pretoZepFabricante = new BloonFabricante(imagem, imagemPop, 2.7f, 30, 45, 30);
+		Bloon pretoZep = new BloonImune(pretoZepFabricante, true, false);
 
 		// TODO o amarelo e o rosa devem ter um escudo que parte ao fim de 12 contactos
-		Bloon amarelo = criarAmarelo();
-		pretoZep.addBloonProvavel(amarelo);
-		Bloon rosa = criarRosa();
-		pretoZep.addBloonProvavel(rosa);
+		Bloon amarelo = new BloonEscudo(criarAmarelo(), 12, escudoImg.clone());
+		pretoZepFabricante.addBloonProvavel(amarelo);
+		Bloon rosa = new BloonEscudo(criarRosa(), 12, escudoImg.clone());
+		pretoZepFabricante.addBloonProvavel(rosa);
 		return pretoZep;
 	}
 }
