@@ -23,6 +23,7 @@ public class ManipuladorVisitor implements VisitorTorre {
         manipulador = new ManipuladorVazio(t);
     }
 
+<<<<<<< HEAD
     @Override public void visita(TorreSniper t) { manipulador = new ManipuladorVazio(t); }
 
     @Override public void visita(TorreBalista t) { manipulador = new ManipuladorBalista(t); }
@@ -36,5 +37,41 @@ public class ManipuladorVisitor implements VisitorTorre {
     @Override public void visita(TorreCanhao t) { manipulador = new ManipuladorVazio(t);}
 
     @Override public void visita(TorreNinja t) {manipulador = new ManipuladorVazio(t);}
+=======
+    @Override
+    public void visita(TorreSniper t) {
+        manipulador = new ManipuladorVazio(t);
+    }
+
+    @Override
+    public void visita(TorreBalista t) {
+        manipulador = new ManipuladorBalista(t);
+    }
+
+    @Override
+    public void visita(TorreMorteiro t) {
+        manipulador = new ManipuladorMorteiro(t);
+    }
+
+    @Override
+    public void visita(TorreOctogonal t) {
+        manipulador = new ManipuladorOcto(t);
+    }
+
+    @Override
+    public void visita(TorreMacaco t) {
+        manipulador = new ManipuladorVazio(t);
+    }
+
+    @Override
+    public void visita(TorreCanhao t) {
+        manipulador = new ManipuladorVazio(t);
+    }
+
+    @Override
+    public void visita(TorreNinja t) {
+        manipulador = new ManipuladorVazio(t);
+    }
+>>>>>>> 8b511d39d8cb55412ea3b078b743fc63d2d7d58f
 
 }

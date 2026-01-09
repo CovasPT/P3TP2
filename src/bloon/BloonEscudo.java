@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 
 import prof.jogos2D.image.ComponenteVisual;
 
+<<<<<<< HEAD
 public class BloonEscudo extends DecoratorBloon{
        private int durabilidade;
     private ComponenteVisual imagemEscudo; 
@@ -49,4 +50,17 @@ public class BloonEscudo extends DecoratorBloon{
         copia.imagemEscudo = imagemEscudo.clone(); 
         return copia;
     }
+=======
+public class BloonEscudo extends BloonFabricante{
+       private int durabilidade;
+    private ComponenteVisual imagemArmadura; 
+    
+   @Override
+    public void desenhar(Graphics2D g) {
+        super.desenhar(g);
+        if (durabilidade > 0) {
+            imagemArmadura.desenhar(g);
+        }
+    }
+>>>>>>> 8b511d39d8cb55412ea3b078b743fc63d2d7d58f
 }

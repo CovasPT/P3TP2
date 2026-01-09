@@ -218,7 +218,11 @@ public class BloonCreator {
 
 		// TODO o Zeppelin metal tem de ser imune a perfurantes
 		BloonFabricante metalZepFabricante = new BloonFabricante(imagem, imagemPop, 2.3f, 30, 45, 30);
+<<<<<<< HEAD
 		Bloon metalZep = new BloonImune(metalZepFabricante, false, true);
+=======
+		Bloon metalZez = BloonImune(metalZepFabricante, false, true);
+>>>>>>> 8b511d39d8cb55412ea3b078b743fc63d2d7d58f
 
 		// TODO o verde e o amarelo têm de ter uma armadura que rebenta ao fim de 8
 		// contactos
